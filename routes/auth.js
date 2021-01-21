@@ -1,7 +1,11 @@
-const express = require('express');
-const jwt     = require('jsonwebtoken');
+const express    = require('express');
+const jwt        = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
+
 const { sequelize, User } = require('../models');
 const accessTokenSecret  = require('../middleware/authMiddleware');
+const  transportMailer   = require('../helper/transportMailer');
+
 const app     = express();
 
 
@@ -42,6 +46,9 @@ app.post('/register',async(req, res)=>{
 
 
 // otp verfication
+
+
+
 app.post('/otp-verification',async(req,res)=>{
    const { user_id, otp } = req.body;
 
@@ -57,6 +64,19 @@ app.post('/otp-verification',async(req,res)=>{
      	user.status =1;
      	user.save();
      	const accessToken = jwt.sign({user_id:user.id,phone:user.phone},'sssshhhh');
+
+
+      const message = {
+        from: 'saif.cloudwapp@gmail.com', // Sender address
+        to: 'saif@mailinator.com',         // recipients
+        subject: 'OTP verfication code', // Subject line
+        // text: 'Successfully! received mail using nodejs' // Plain text body
+        html:'<h2>Welcome your are registered successfully</h2>'
+      };
+
+       var sentRegMail = await transportMailer.sendMail(message);
+
+
      	return res.json({"status":true,"data":{accessToken:accessToken},"message":"Registered successfully"});
      }else{
      	return res.json({'status':false,"message":"Otp is not matched"});

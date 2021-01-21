@@ -1,29 +1,34 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('product_images', {
+    await queryInterface.createTable('reviews', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      user_id: {
+        type: Sequelize.INTEGER
+      },
       product_id: {
         type: Sequelize.INTEGER
       },
-      image: {
-        type: Sequelize.STRING,
-        defaultValue:'products/default.png'
+      review: {
+        type: Sequelize.TEXT
+      },
+      rating: {
+        type: Sequelize.STRING
       },
       status: {
         type: Sequelize.INTEGER,
         defaultValue:1,
-        comment:"1=>active"
+        comment:'1=>active'
       },
       is_deleted: {
         type: Sequelize.INTEGER,
         defaultValue:0,
-        comment:"1=>deleted"
+        comment:'1=>deleted'
       },
       createdAt: {
         allowNull: false,
@@ -36,6 +41,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('product_images');
+    await queryInterface.dropTable('reviews');
   }
 };
