@@ -5,8 +5,14 @@ const multer              = require('multer');
 const { sequelize }  = require('./models');
 const app            = express();
 
-app.use(express.json());
-app.use(bodyParser.json())
+
+
+
+ // app.use(bodyParser.json());
+ // app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json({limit: '50mb'}));
+app.use(express.urlencoded({limit: '50mb',extended: false }));
+ // app.use(express.json());
 app.use(express.static(__dirname+'/public'))
 
 //user
@@ -21,6 +27,7 @@ const UserOrder      = require('./routes/order');
 //admin 
 
 const AdminHome      = require('./routes/admin/home');
+const AdminProduct   = require('./routes/admin/product');
 
 
 // user 
@@ -34,6 +41,8 @@ app.use('/api/user/order',UserOrder);
 
 // admin
 app.use('/admin',AdminHome);
+app.use('/admin/product',AdminProduct);
+
 
 
 app.listen({port:5000}, async()=>{
