@@ -20,6 +20,8 @@ const UserOrder      = require('./routes/order');
 
 //admin 
 
+const AdminHome      = require('./routes/admin/home');
+
 
 // user 
 app.use('/api',HomeRoute);
@@ -31,6 +33,7 @@ app.use('/api/user/order',UserOrder);
 
 
 // admin
+app.use('/admin',AdminHome);
 
 
 app.listen({port:5000}, async()=>{

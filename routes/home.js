@@ -347,9 +347,10 @@ app.post('/product',async(req,res) => {
           // });
            
 
-     return res.json({'status':true,'data':{'products':productData},'message':'Product list'})
+     return res.json({'status':true,'data':{'products':productData},'message':'Product list'});
     }catch(err){
      console.log(err)
+     return res.json({'status':false,'message':'There is Something wrong'});
     }
 });
 
