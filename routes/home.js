@@ -20,6 +20,8 @@ const { sequelize ,
     Review
 } = require('../models');
 
+
+const accessTokenSecret   = require('../middleware/authMiddleware');
 const Op = Sequelize.Op;
 
 
@@ -256,6 +258,103 @@ app.get('/single-product-details/:id',async(req,res) =>{
      return res.json({'status':false,'message':'Something is  wrong'});
     }
 });
+
+
+
+
+
+app.post('/product',async(req,res) => {
+
+    const { category_id,subcategory_id, min, max, brand, user_id } = req.body;
+    // console.log(min+'  '+max)
+    var options = {where:{}};
+
+    
+    try{
+          
+          if(category_id)
+          {
+            options.where.category_id = category_id;
+          }
+
+          if(subcategory_id){
+            var subid = subcategory_id.split(",");
+            options.where.subcategory_id ={[Op.in]:subid};
+          }
+          
+          if(min && max){
+            options.where.price = {[Op.between]:[min,max]}
+          }
+
+
+          if(brand){
+            var brnd = brand.split(",");
+             options.where.brand = {[Op.in]:brnd}
+          }
+
+
+     
+          var products = await Product.findAll({options,
+            include:[{
+                       model:Product_image,
+                       as:'product_image',
+                      },
+                      {
+                        model:Product_color,
+                        as:'product_color',
+                        include:{
+                            model:Color,
+                            as:'color'
+                        }
+                      },
+                      {
+                        model:Product_size,
+                        as:'product_size',
+                        include:{
+                            model:Size,
+                            as:'size'
+                        }
+                      }
+                      ]
+          });
+
+
+
+
+        var productData = [];
+        products.forEach((item)=>{
+            // console.log(item.dataValues.id)
+            productData.push({
+              id:item.dataValues.id,
+              product_name:item.product_name,
+              image:item.product_image,
+              brand:item.brand,
+              price:item.price,
+              discount:item.discount,
+              discounted_price:item.price_after_discount,
+              in_stock:item.stock
+            })
+        })
+
+
+          //  var product = await Product.findAll({
+          //       where:{
+          //           category_id:category_id,
+          //           subcategory_id:subcategory_id,
+          //           status:1,
+          //           is_deleted:0
+          //       }
+          // });
+           
+
+     return res.json({'status':true,'data':{'products':productData},'message':'Product list'})
+    }catch(err){
+     console.log(err)
+    }
+});
+
+
+
 
 
 
