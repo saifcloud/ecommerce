@@ -1,6 +1,6 @@
 {
   "development": {
-    "username": "dk",
+    "username": "root",
     "password": "123456",
     "database": "ecommerce",
     "host": "127.0.0.1",
@@ -14,7 +14,7 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "dk",
+    "username": "root",
     "password": null,
     "database": "ecommerce",
     "host": "127.0.0.1",
