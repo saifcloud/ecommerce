@@ -1,7 +1,7 @@
 const express        = require('express');
 const bodyParser     = require('body-parser');
 const path           = require('path');
-const multer              = require('multer');
+const multer         = require('multer');
 const { sequelize }  = require('./models');
 const app            = express();
 
@@ -27,7 +27,11 @@ const UserOrder      = require('./routes/order');
 //admin 
 
 const AdminHome      = require('./routes/admin/home');
+
 const AdminProduct   = require('./routes/admin/product');
+
+const AdminCategory     = require('./routes/admin/category');
+
 
 
 // user 
@@ -41,7 +45,11 @@ app.use('/api/user/order',UserOrder);
 
 // admin
 app.use('/admin',AdminHome);
+
 app.use('/admin/product',AdminProduct);
+
+app.use('/admin/category',AdminCategory);
+
 
 
 

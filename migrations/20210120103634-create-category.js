@@ -11,6 +11,9 @@ module.exports = {
       category_name: {
         type: Sequelize.STRING
       },
+      image: {
+        type: Sequelize.STRING
+      },
       status: {
         type: Sequelize.INTEGER,
         defaultValue:1,
