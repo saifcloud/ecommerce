@@ -27,10 +27,10 @@ const UserOrder      = require('./routes/order');
 //admin 
 
 const AdminHome      = require('./routes/admin/home');
-
 const AdminProduct   = require('./routes/admin/product');
-
-const AdminCategory     = require('./routes/admin/category');
+const AdminCategory  = require('./routes/admin/category');
+const AdminCoupon    = require('./routes/admin/coupon');
+const AdminOrder      = require('./routes/admin/order');
 
 
 
@@ -45,10 +45,10 @@ app.use('/api/user/order',UserOrder);
 
 // admin
 app.use('/admin',AdminHome);
-
 app.use('/admin/product',AdminProduct);
-
 app.use('/admin/category',AdminCategory);
+app.use('/admin/coupon',AdminCoupon);
+app.use('/admin/order',AdminOrder);
 
 
 
