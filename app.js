@@ -20,8 +20,13 @@ const UserOrder      = require('./routes/order');
 
 //admin 
 
-const AdminHome      = require('./routes/admin/home');
+const AdminHome         = require('./routes/admin/home');
 const AdminCategory     = require('./routes/admin/category');
+const AdminSubCategory  = require('./routes/admin/subcategory');
+const AdminBrand        = require('./routes/admin/brand');
+const AdminSize         = require('./routes/admin/size');
+const AdminColor        = require('./routes/admin/color');
+const AdminBanner       = require('./routes/admin/banner');
 
 
 // user 
@@ -36,6 +41,12 @@ app.use('/api/user/order',UserOrder);
 // admin
 app.use('/admin',AdminHome);
 app.use('/admin/category',AdminCategory);
+app.use('/admin/subcategory',AdminSubCategory);
+app.use('/admin/brand',AdminBrand);
+app.use('/admin/size',AdminSize);
+app.use('/admin/color',AdminColor);
+app.use('/admin/banner',AdminBanner);
+
 
 
 

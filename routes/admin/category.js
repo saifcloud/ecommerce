@@ -8,6 +8,21 @@ var path    =    require('path');
 const Op = Sequelize.Op;
 
 
+app.get('/',async(req, res)=>{
+   
+   try{
+   	       var rec = await Category.findAll();
+		   //console.log(cat_data);	
+			return res.json({'status':true,'data':rec,"message":"Category Data"})
+		
+		}catch(err){
+			//console.log(err);
+		return res.json({'status':false,"message":"Something is wrong!!"})
+
+		}
+});
+
+//Add Category
 const store_cat_img = multer.diskStorage({
 	destination :(req,file,cb)=>{
 		cb(null, 'public/category/');
@@ -23,12 +38,12 @@ const upload_category = multer({storage: store_cat_img});
 app.post('/add',upload_category.single('image'),async(req,res) =>{
 	const {name} = req.body;
 
-	 if(!name) return res.json({'status':false,'message':'Email is required.'});
+	 if(!name) return res.json({'status':false,'message':'Name is required.'});
 	 if(!req.file) return res.json({'status':false,'message':'Image is required.'});
 
 	try{
 
-		var checkName = await Category.findOne({where:{category_name:req.body.name}})
+		var checkName = await Category.findOne({where:{category_name:req.body.name,is_deleted:0}})
 			if(!checkName){
 	           var catdata = await Category.create({
 			    category_name:req.body.name,
@@ -39,7 +54,7 @@ app.post('/add',upload_category.single('image'),async(req,res) =>{
 	        return res.json({'status':false,'data':"","message":"Category Name Exist!!"})
 	        }
 		//console.log(catdata);
-		return res.json({'status':true,'data':catdata,"message":"Category details"})
+		return res.json({'status':true,"message":"Category Added Successfully."})
     
     }catch(err){
      console.log(err)
@@ -65,7 +80,7 @@ app.post('/update',upload_category_update.single('image'),async(req, res)=>{
    
    try{
    	    var checkName = await Category.findOne(
-   	    {where:{[Op.and]: [{category_name: req.body.name }, { id:{[Op.ne]: req.body.id}}]}}
+   	    {where:{[Op.and]: [{category_name: req.body.name },{is_deleted: 0}, { id:{[Op.ne]: req.body.id}}]}}
    	    )
 		if(!checkName){
 		   	var catrec = await Category.findOne({where:{id:req.body.id}});
@@ -75,7 +90,7 @@ app.post('/update',upload_category_update.single('image'),async(req, res)=>{
 		        imagedata = 'category/'+req.file.filename;
 		   	}
 			 var cat = await Category.update(
-	            {name: req.body.name,
+	            {category_name: req.body.name,
 	             image:imagedata },
 				{where:{id:req.body.id}
 			});
@@ -92,6 +107,26 @@ app.post('/update',upload_category_update.single('image'),async(req, res)=>{
 		}
   
 });
+
+
+//Delete Category
+app.post('/delete',upload_category_update.single('image'),async(req, res)=>{
+   
+    try{
+   	        var cat = await Category.update(
+	            {is_deleted: 1},
+				{where:{id:req.body.id}
+			});
+			//console.log(cat_data);	
+			return res.json({'status':true,'data':"","message":"Category Deleted"})
+		
+		}catch(err){
+			console.log(err);
+		    return res.json({'status':false,"message":"Something is wrong!!"})
+        }
+  
+});
+
 
 
 module.exports = app;
