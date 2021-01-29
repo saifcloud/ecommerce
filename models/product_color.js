@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate({Color}) {
       // define association here
-      this.hasOne(Color,{foreignKey:'id',as:'color'});
+      this.hasOne(Color,{foreignKey:'id',sourceKey:'color_id',as:'color'});
     }
   };
   Product_color.init({

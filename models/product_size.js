@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate({Size}) {
       // define association here
-      this.hasOne(Size,{foreignKey:'id',as:'size'});
+      this.hasOne(Size,{foreignKey:'id',sourceKey:'size_id',as:'size'});
 
     }
   };
